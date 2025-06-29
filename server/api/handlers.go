@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/crizzy9/findarr/internal/config"
-	"github.com/crizzy9/findarr/internal/storage"
-	"github.com/crizzy9/findarr/internal/web"
+	"findarr/server/config"
+	"findarr/server/storage"
+	"findarr/server/web"
 )
 
 // Handlers encapsulates dependencies for HTTP handlers

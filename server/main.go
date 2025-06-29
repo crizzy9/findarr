@@ -7,10 +7,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/crizzy9/findarr/internal/config"
-	"github.com/crizzy9/findarr/internal/api"
-	"github.com/crizzy9/findarr/internal/web"
-	"github.com/crizzy9/findarr/internal/storage"
+	"findarr/server/api"
+	"findarr/server/config"
+	"findarr/server/storage"
+	"findarr/server/web"
 )
 
 func main() {
@@ -50,4 +50,3 @@ func main() {
 		log.Fatal(err)
 	}
 }
-
