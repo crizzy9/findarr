@@ -18,9 +18,10 @@ services:
     volumes:
       # For configuration persistence
       - ./config:/app/config
+      # Persist SQLite DB file for all environments
+      - ./config/findarr.db:/app/config/findarr.db
       # Optional: Mount media directories for scanning
       # - /path/to/movies:/media/movies
-      # - /path/to/books:/media/books
     environment:
       - TZ=UTC
       # Add any environment variables your app needs here

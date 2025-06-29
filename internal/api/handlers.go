@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/crizzy9/findarr/internal/config"
+	"github.com/crizzy9/findarr/internal/storage"
 	"github.com/crizzy9/findarr/internal/web"
 )
 
@@ -49,30 +50,22 @@ func (h *Handlers) IndexHandler(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query().Get("q")
 
+	results, err := storage.SearchMedia(strings.ToLower(q))
+	if err != nil {
+		http.Error(w, "Database error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	if r.Header.Get("HX-Request") == "true" {
-		results := []map[string]string{
-			{"title": "Inception", "type": "movie", "year": "2010", "id": "tt1375666"},
-			{"title": "The Shining", "type": "movie", "year": "1980", "id": "tt0081505"},
-			{"title": "The Lord of the Rings", "type": "book", "year": "1954", "id": "978-0618640157"},
-			{"title": "Dune", "type": "book", "year": "1965", "id": "978-0441172719"},
-			{"title": "Dark Side of the Moon", "type": "music", "year": "1973", "id": "album-1973-pink-floyd"},
-			{"title": "Stranger Things", "type": "show", "year": "2016", "id": "tt4574334"},
-		}
-		var filteredResults []map[string]string
-		for _, result := range results {
-			if strings.Contains(strings.ToLower(result["title"]), strings.ToLower(q)) {
-				filteredResults = append(filteredResults, result)
-			}
-		}
 		w.Header().Set("Content-Type", "text/html")
-		if len(filteredResults) == 0 {
+		if len(results) == 0 {
 			fmt.Fprint(w, "<div class='p-4 text-gray-500'>No results found</div>")
 			return
 		}
 		fmt.Fprint(w, "<div class='space-y-3'>")
-		for i, result := range filteredResults {
+		for i, result := range results {
 			delay := fmt.Sprintf("style='animation-delay: %dms'", i*50)
-			badgeClass := "media-badge media-badge-" + result["type"]
+			badgeClass := "media-badge media-badge-" + result.Type
 			fmt.Fprintf(w, `
 			<div class='result-item p-3 border rounded card-findarr' %s>
 				<div class='flex justify-between items-start'>
@@ -82,14 +75,10 @@ func (h *Handlers) SearchHandler(w http.ResponseWriter, r *http.Request) {
 					</div>
 					<span class='%s'>%s</span>
 				</div>
-			</div>`, delay, result["title"], result["year"], badgeClass, result["type"])
+			</div>`, delay, result.Title, result.Year, badgeClass, result.Type)
 		}
 		fmt.Fprint(w, "</div>")
 	} else {
-		results := []map[string]string{
-			{"title": "Example Movie", "type": "movie", "query": q},
-			{"title": "Example Book", "type": "book", "query": q},
-		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(results)
 	}

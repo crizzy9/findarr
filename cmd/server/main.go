@@ -10,11 +10,15 @@ import (
 	"github.com/crizzy9/findarr/internal/config"
 	"github.com/crizzy9/findarr/internal/api"
 	"github.com/crizzy9/findarr/internal/web"
+	"github.com/crizzy9/findarr/internal/storage"
 )
 
 func main() {
 	// Load configuration
 	appConfig := config.LoadConfig()
+
+	// Initialize database
+	storage.InitDB(appConfig.Database.Path)
 
 	// Ensure config directory exists
 	configDir := filepath.Dir(appConfig.Database.Path)

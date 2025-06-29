@@ -26,8 +26,10 @@ COPY --from=builder /app/findarr .
 # Copy web templates and static files
 COPY --from=builder /app/web ./web
 
+# Copy config directory for first-run DB seeding (ignored if mounted)
+COPY --from=builder /app/config ./config
+
 # Expose the port the server listens on
-EXPOSE 8080
 
 # Run the application
 CMD ["./findarr"]
