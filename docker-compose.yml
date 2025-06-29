@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  findarr:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: findarr
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      # For configuration persistence
+      - ./config:/app/config
+      # Optional: Mount media directories for scanning
+      # - /path/to/movies:/media/movies
+      # - /path/to/books:/media/books
+    environment:
+      - TZ=UTC
+      # Add any environment variables your app needs here
+      # - FINDARR_API_KEY=your_api_key
+      # - FINDARR_DB_PATH=/app/config/findarr.db
+    networks:
+      - findarr-network
+
+networks:
+  findarr-network:
+    driver: bridge
+

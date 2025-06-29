@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Build artifacts
+findarr
+
+# Configuration and data
+config/*
+!config/.gitkeep
+
+# Go build cache and test files
+**/*.test
+**/*.out
+**/*.prof
+**/*.cpu
+**/*.mem
+
+# IDE specific files
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db
+

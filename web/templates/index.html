@@ -1,0 +1,36 @@
+{{ define "content" }}
+<div class="max-w-2xl mx-auto bg-white rounded shadow p-8">
+    <h1 class="text-2xl font-bold mb-2">Welcome to Findarr</h1>
+    <p class="mb-4">A universal content metadata resolver and organizer for self-hosted media collections.</p>
+    
+    <form hx-get="/api/search" hx-target="#results" class="mb-4 search-container flex">
+        <input name="q" type="text" placeholder="Search for anything..." class="border rounded px-3 py-2 flex-grow search-input">
+        <button type="submit" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded btn-findarr search-button">Search</button>
+    </form>
+    
+    <div id="results" class="mb-6"></div>
+    
+    <div class="mt-8 pt-4 border-t border-gray-200">
+        <h2 class="text-lg font-semibold mb-2">System Information</h2>
+        <div class="text-sm text-gray-600">
+            <p>Server running on: {{ if .Config.Server.Host }}{{ .Config.Server.Host }}{{ else }}0.0.0.0{{ end }}:{{ .Config.Server.Port }}</p>
+            <p>Database path: {{ .Config.Database.Path }}</p>
+            
+            <h3 class="text-md font-medium mt-3 mb-1">Media Paths</h3>
+            <ul class="list-disc pl-5">
+                {{ range $type, $path := .Config.Media.Paths }}
+                    {{ if $path }}
+                        <li>{{ $type }}: {{ $path }}</li>
+                    {{ end }}
+                {{ end }}
+                {{ if not .Config.Media.Paths }}
+                    <li class="text-gray-500">No media paths configured</li>
+                {{ end }}
+            </ul>
+            
+            <p class="mt-3 text-xs text-gray-500">Configure paths in docker-compose.yml or using environment variables</p>
+        </div>
+    </div>
+</div>
+{{ end }}
+

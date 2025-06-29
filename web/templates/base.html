@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Findarr</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="/static/css/findarr.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow mb-8">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-xl font-bold">Findarr</a>
+            <div>
+                <a href="/" class="mx-2 hover:underline">Home</a>
+                <a href="#" class="mx-2 hover:underline">Movies</a>
+                <a href="#" class="mx-2 hover:underline">Shows</a>
+                <a href="#" class="mx-2 hover:underline">Books</a>
+                <a href="#" class="mx-2 hover:underline">Music</a>
+                <a href="/health" class="mx-2 hover:underline text-gray-500 text-sm" target="_blank">Health</a>
+            </div>
+        </div>
+    </nav>
+    <main class="container mx-auto px-4">
+        {{ template "content" . }}
+    </main>
+</body>
+</html>
+
